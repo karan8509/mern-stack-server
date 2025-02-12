@@ -2,6 +2,7 @@ const express = require("express")
 const Connections = require("./config/db.js")
 const UserModel = require("./modules/User.js")
 const cors = require("cors")
+const mongoose = require("mongoose")
 const app = express();
 app.use(cors())
 app.use(express.json());
@@ -36,14 +37,14 @@ app.get('/getUser/:id', async (req, res) => {
 })
 
 
-app.put("/updataUser/:id", async (req, res) => {
+app.put("/updateUser/:id", async (req, res) => {
     const id = req.params.id
     try {
-        await UserModel.findOneAndUpdate(id, { name: req.body.name, age: req.body.age, mobile: req.body.mobile, })
+        const objectId = new mongoose.Types.ObjectId(id);
+        const updatedUser = await UserModel.findOneAndUpdate(objectId, { name: req.body.name, age: req.body.age, mobile: req.body.mobile, }, { new: true })
         res.json({
-            message: "Successfully Updata ", success: true
+            message: "Successfully Updata ", success: true, data: updatedUser
         })
-
     } catch (error) {
         res.json({ message: error.message || "Something went wrong!", success: false })
     }
