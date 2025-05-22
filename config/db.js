@@ -1,9 +1,9 @@
 const mongoose = require("mongoose")
-
+require("dotenv").config()
 
 const Connections = async () => {
     try {
-        await mongoose.connect("mongodb+srv://userdata:userdata@cluster0.ju1qxkf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+        await mongoose.connect(process.env.URL_DATABASE)
         console.log("MONGODB CONNECTIONS ON ")
     } catch (error) {
         console.log("MONGODB  NOT CONNECTIONS ")
